@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Owner Dashboard — Plot & Key{% endblock %}
+{% block content %}
+
+<div class="hero" style="padding-bottom:0;">
+  <h1 style="font-size:1.8rem;">Owner dashboard</h1>
+  <p>Add properties, create listings, and see who's messaged you.</p>
+</div>
+
+<div class="section-title">
+  <h2>Add a property</h2>
+</div>
+<div class="panel" style="margin:0 0 12px 0; max-width:none;">
+  <form method="post" action="{{ url_for('add_property') }}">
+    <div class="field">
+      <label for="location">Location</label>
+      <input type="text" name="location" id="location" required>
+    </div>
+    <div class="field">
+      <label for="price">Price ($)</label>
+      <input type="number" name="price" id="price" step="0.01" required>
+    </div>
+    <div class="field">
+      <label for="bedrooms">Bedrooms</label>
+      <input type="number" name="bedrooms" id="bedrooms" required>
+    </div>
+    <div class="field">
+      <label for="type">Type</label>
+      <select name="type" id="type">
+        <option value="sale">For sale</option>
+        <option value="rent">For rent</option>
+      </select>
+    </div>
+    <button class="btn brass" type="submit">Add property</button>
+  </form>
+</div>
+
+<div class="section-title">
+  <h2>Your properties</h2>
+  <span class="count">{{ properties|length }}</span>
+</div>
+{% if properties %}
+<table class="data">
+  <tr><th>ID</th><th>Location</th><th>Type</th><th>Beds</th><th>Price</th><th>Available</th><th></th></tr>
+  {% for p in properties %}
+  <tr>
+    <td>{{ p.id }}</td>
+    <td>{{ p.location }}</td>
+    <td>{{ p.type }}</td>
+    <td>{{ p.bedrooms }}</td>
+    <td>${{ "{:,.0f}".format(p.price) }}</td>
+    <td>{{ "Yes" if p.available else "No" }}</td>
+    <td>
+      <form method="post" action="{{ url_for('create_listing', property_id=p.id) }}" style="display:inline;">
+        <button class="btn secondary" type="submit" style="font-size:0.72rem; padding:6px 10px;">Create listing</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<div class="empty-state">No properties yet — add one above.</div>
+{% endif %}
+
+<div class="section-title">
+  <h2>Your listings</h2>
+  <span class="count">{{ listings|length }}</span>
+</div>
+{% if listings %}
+<table class="data">
+  <tr><th>Listing</th><th>Property</th><th>Status</th><th>Posted</th></tr>
+  {% for l in listings %}
+  <tr>
+    <td>#{{ l.id }}</td>
+    <td>{{ marketplace.properties[l.property_id].location }}</td>
+    <td><span class="status-tag {{ l.status }}">{{ l.status }}</span></td>
+    <td>{{ l.post_date }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<div class="empty-state">No listings yet — create one from a property above.</div>
+{% endif %}
+
+<div class="section-title">
+  <h2>Messages</h2>
+  <span class="count">{{ messages|length }}</span>
+</div>
+{% if messages %}
+<table class="data">
+  <tr><th>From</th><th>Message</th><th>Date</th></tr>
+  {% for m in messages %}
+  <tr>
+    <td>{{ marketplace.get_user(m.sender_id).name if marketplace.get_user(m.sender_id) else "Unknown" }} ({{ m.sender_role }})</td>
+    <td>{{ m.content }}</td>
+    <td>{{ m.date }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<div class="empty-state">No messages yet.</div>
+{% endif %}
+
+{% endblock %}

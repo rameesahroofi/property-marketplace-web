@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Admin — Plot & Key{% endblock %}
+{% block content %}
+
+<div class="panel">
+  <h2>Admin access</h2>
+  <p class="sub">Demo password: <code>admin123</code></p>
+  <form method="post" action="{{ url_for('admin') }}">
+    <div class="field">
+      <label for="password">Admin password</label>
+      <input type="password" name="password" id="password" required>
+    </div>
+    <button class="btn brass" type="submit" style="width:100%;">Enter</button>
+  </form>
+</div>
+
+{% endblock %}

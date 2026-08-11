@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Renter Dashboard — Plot & Key{% endblock %}
+{% block content %}
+
+<div class="hero" style="padding-bottom:0;">
+  <h1 style="font-size:1.8rem;">Welcome, {{ user.name }}</h1>
+  <p>Balance: <strong>${{ "{:,.2f}".format(user.balance) }}</strong> &middot; Preferred term: <strong>{{ user.rental_months }} months</strong></p>
+</div>
+
+<div class="section-title">
+  <h2>Your favorites</h2>
+  <span class="count">{{ favorites|length }}</span>
+</div>
+
+{% if favorites %}
+<div class="grid">
+  {% for item in favorites %}
+  <div class="card">
+    <span class="card-type">{{ item.property.type }}</span>
+    <div class="card-location">{{ item.property.location }}</div>
+    <div class="specs">{{ item.property.bedrooms }} bed &middot; <span class="status-tag {{ item.listing.status }}">{{ item.listing.status }}</span></div>
+    <div class="price">${{ "{:,.0f}".format(item.property.price) }} / mo</div>
+    <div class="card-actions">
+      <a class="btn secondary" href="{{ url_for('listing_detail', listing_id=item.listing.id) }}">View</a>
+      <form method="post" action="{{ url_for('remove_favorite', listing_id=item.listing.id) }}">
+        <button class="btn danger" type="submit">Remove</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">No favorites yet — <a href="{{ url_for('home') }}">browse listings</a>.</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Admin — Plot & Key{% endblock %}
+{% block content %}
+
+<div class="hero" style="padding-bottom:0;">
+  <h1 style="font-size:1.8rem;">Admin panel</h1>
+  <p><a href="{{ url_for('admin_logout') }}">Log out of admin</a></p>
+</div>
+
+<div class="section-title">
+  <h2>Pending approval</h2>
+  <span class="count">{{ pending|length }}</span>
+</div>
+{% if pending %}
+<table class="data">
+  <tr><th>Listing</th><th>Location</th><th>Owner</th><th>Posted</th><th></th></tr>
+  {% for l in pending %}
+  <tr>
+    <td>#{{ l.id }}</td>
+    <td>{{ marketplace.properties[l.property_id].location }}</td>
+    <td>{{ marketplace.get_user(l.owner_id).name if marketplace.get_user(l.owner_id) else "Unknown" }}</td>
+    <td>{{ l.post_date }}</td>
+    <td style="display:flex; gap:6px;">
+      <form method="post" action="{{ url_for('approve_listing', listing_id=l.id) }}">
+        <button class="btn brass" type="submit" style="font-size:0.72rem; padding:6px 10px;">Approve</button>
+      </form>
+      <form method="post" action="{{ url_for('reject_listing', listing_id=l.id) }}">
+        <button class="btn danger" type="submit" style="font-size:0.72rem; padding:6px 10px;">Reject</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<div class="empty-state">Nothing pending review.</div>
+{% endif %}
+
+<div class="section-title">
+  <h2>All listings</h2>
+  <span class="count">{{ all_listings|length }}</span>
+</div>
+{% if all_listings %}
+<table class="data">
+  <tr><th>Listing</th><th>Location</th><th>Status</th></tr>
+  {% for l in all_listings %}
+  <tr>
+    <td>#{{ l.id }}</td>
+    <td>{{ marketplace.properties[l.property_id].location }}</td>
+    <td><span class="status-tag {{ l.status }}">{{ l.status }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

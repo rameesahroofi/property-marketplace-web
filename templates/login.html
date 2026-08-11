@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Log in — Plot & Key{% endblock %}
+{% block content %}
+
+<div class="panel">
+  <h2>Log in</h2>
+  <p class="sub">Buyer, renter, or owner accounts all log in here.</p>
+  <form method="post" action="{{ url_for('login') }}">
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required>
+    </div>
+    <button class="btn brass" type="submit" style="width:100%;">Log in</button>
+  </form>
+  <p class="sub" style="margin-top:16px;">No account? <a href="{{ url_for('register') }}">Register here</a>.</p>
+</div>
+
+{% endblock %}

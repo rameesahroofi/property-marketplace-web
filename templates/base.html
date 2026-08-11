@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Plot & Key{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="topbar">
+    <div class="wrap">
+      <a href="{{ url_for('home') }}" style="text-decoration:none;">
+        <div class="brand">Plot <span class="mark">&amp;</span> Key</div>
+      </a>
+      <div class="links">
+        <a href="{{ url_for('home') }}">Listings</a>
+        {% if current_user %}
+          <a href="{{ url_for(current_user.role + '_dashboard') }}">Dashboard</a>
+          <a href="{{ url_for('logout') }}">Log out ({{ current_user.name }})</a>
+        {% else %}
+          <a href="{{ url_for('login') }}">Log in</a>
+          <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+        <a href="{{ url_for('admin') }}">Admin</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="flash">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <footer>
+      Plot &amp; Key — a property marketplace project. Originally modeled in C++, rebuilt as a Flask web app.
+    </footer>
+  </div>
+</body>
+</html>

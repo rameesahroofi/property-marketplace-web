@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Register — Plot & Key{% endblock %}
+{% block content %}
+
+<div class="panel">
+  <h2>Create an account</h2>
+  <p class="sub">Register as a buyer, renter, or owner.</p>
+
+  <form method="post" action="{{ url_for('register') }}" id="regForm">
+    <div class="role-tabs">
+      <label><input type="radio" name="role" value="buyer" checked onclick="toggleRoleFields()"><span>Buyer</span></label>
+      <label><input type="radio" name="role" value="renter" onclick="toggleRoleFields()"><span>Renter</span></label>
+      <label><input type="radio" name="role" value="owner" onclick="toggleRoleFields()"><span>Owner</span></label>
+    </div>
+
+    <div class="field">
+      <label for="name">Full name</label>
+      <input type="text" name="name" id="name" required>
+    </div>
+    <div class="field">
+      <label for="phone">Phone</label>
+      <input type="text" name="phone" id="phone" required>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required>
+    </div>
+
+    <div class="field role-only role-buyer role-renter">
+      <label for="balance">Starting balance ($)</label>
+      <input type="number" name="balance" id="balance" step="0.01" value="0">
+    </div>
+    <div class="field role-only role-renter" style="display:none;">
+      <label for="rental_months">Rental term (months)</label>
+      <input type="number" name="rental_months" id="rental_months" value="12">
+    </div>
+
+    <button class="btn brass" type="submit" style="width:100%;">Create account</button>
+  </form>
+</div>
+
+<script>
+function toggleRoleFields() {
+  const role = document.querySelector('input[name="role"]:checked').value;
+  document.querySelectorAll('.role-buyer, .role-renter').forEach(el => el.style.display = 'none');
+  if (role === 'buyer') document.querySelectorAll('.role-buyer').forEach(el => el.style.display = 'block');
+  if (role === 'renter') document.querySelectorAll('.role-renter').forEach(el => el.style.display = 'block');
+  if (role === 'owner') document.querySelectorAll('.role-only').forEach(el => el.style.display = 'none');
+}
+toggleRoleFields();
+</script>
+
+{% endblock %}

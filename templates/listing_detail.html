@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{{ property.location }} — Plot & Key{% endblock %}
+{% block content %}
+
+<div class="panel" style="max-width:640px;">
+  <span class="card-type">{{ property.type }}</span>
+  <h2>{{ property.location }}</h2>
+  <div class="specs" style="margin-bottom:16px;">
+    Listing #{{ listing.id }} &middot; {{ property.bedrooms }} bedrooms &middot; listed {{ listing.post_date }}
+    &middot; <span class="status-tag {{ listing.status }}">{{ listing.status }}</span>
+  </div>
+  <div class="price" style="font-size:1.6rem; border:none; padding:0;">
+    ${{ "{:,.0f}".format(property.price) }}{% if property.type == "rent" %} / month{% endif %}
+  </div>
+  <p class="label" style="margin-top:16px;">Listed by</p>
+  <p>{{ owner.name if owner else "Unknown" }} &middot; {{ owner.email if owner else "" }}</p>
+
+  <div class="card-actions" style="margin-top:24px; flex-wrap:wrap;">
+    {% if current_user and current_user.role == "buyer" and property.type == "sale" and property.available %}
+      <form method="post" action="{{ url_for('buy', listing_id=listing.id) }}">
+        <button class="btn brass" type="submit">Buy this property</button>
+      </form>
+    {% endif %}
+    {% if current_user and current_user.role == "renter" and property.type == "rent" and property.available %}
+      <form method="post" action="{{ url_for('rent', listing_id=listing.id) }}">
+        <button class="btn brass" type="submit">Rent this property</button>
+      </form>
+    {% endif %}
+    {% if current_user and current_user.role in ("buyer", "renter") %}
+      <form method="post" action="{{ url_for('add_favorite', listing_id=listing.id) }}">
+        <button class="btn secondary" type="submit">Save to favorites</button>
+      </form>
+    {% endif %}
+    {% if not property.available %}
+      <span class="status-tag Sold">No longer available</span>
+    {% endif %}
+  </div>
+
+  {% if current_user and current_user.role in ("buyer", "renter") %}
+  <div style="margin-top:32px;">
+    <p class="label">Message the owner</p>
+    <form method="post" action="{{ url_for('send_message', listing_id=listing.id) }}">
+      <div class="field">
+        <textarea name="content" placeholder="Ask a question about this property..." required></textarea>
+      </div>
+      <button class="btn secondary" type="submit">Send message</button>
+    </form>
+  </div>
+  {% elif not current_user %}
+  <p style="margin-top:24px;"><a href="{{ url_for('login') }}">Log in</a> as a buyer or renter to save, message, or make an offer.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

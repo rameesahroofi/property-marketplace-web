@@ -1,0 +1,149 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "role": "owner",
+      "name": "Muhammad Shahid",
+      "phone": "021374574874",
+      "email": "muhammadshahid@gmail.com",
+      "password": "abc123"
+    },
+    {
+      "id": 2,
+      "role": "renter",
+      "name": "ali ahmed",
+      "phone": "03009783562",
+      "email": "ali.1@gmail.com",
+      "password": "iamali123",
+      "balance": 50000.0,
+      "rental_months": 12,
+      "favorites": []
+    },
+    {
+      "id": 3,
+      "role": "owner",
+      "name": "saima khan",
+      "phone": "02135467865",
+      "email": "saima@gmail.com",
+      "password": "saima123"
+    }
+  ],
+  "properties": [
+    {
+      "id": 1,
+      "owner_id": 1,
+      "location": "karachi",
+      "price": 50000.0,
+      "type": "rent",
+      "bedrooms": 2,
+      "available": true
+    },
+    {
+      "id": 2,
+      "owner_id": 1,
+      "location": "karachi",
+      "price": 55000.0,
+      "type": "rent",
+      "bedrooms": 2,
+      "available": true
+    },
+    {
+      "id": 3,
+      "owner_id": 3,
+      "location": "lahore",
+      "price": 45000.0,
+      "type": "rent",
+      "bedrooms": 1,
+      "available": true
+    },
+    {
+      "id": 4,
+      "owner_id": 3,
+      "location": "karachi",
+      "price": 75000.0,
+      "type": "rent",
+      "bedrooms": 2,
+      "available": true
+    },
+    {
+      "id": 5,
+      "owner_id": 3,
+      "location": "karachi",
+      "price": 500000.0,
+      "type": "sale",
+      "bedrooms": 2,
+      "available": true
+    },
+    {
+      "id": 6,
+      "owner_id": 3,
+      "location": "karachi",
+      "price": 75000.0,
+      "type": "rent",
+      "bedrooms": 2,
+      "available": true
+    },
+    {
+      "id": 7,
+      "owner_id": 3,
+      "location": "lahore",
+      "price": 55000.0,
+      "type": "sale",
+      "bedrooms": 2,
+      "available": true
+    }
+  ],
+  "listings": [
+    {
+      "id": 1,
+      "property_id": 1,
+      "owner_id": 1,
+      "status": "Approved",
+      "post_date": "2026-08-11"
+    },
+    {
+      "id": 2,
+      "property_id": 1,
+      "owner_id": 1,
+      "status": "Approved",
+      "post_date": "2026-08-11"
+    },
+    {
+      "id": 3,
+      "property_id": 2,
+      "owner_id": 1,
+      "status": "Approved",
+      "post_date": "2026-08-11"
+    },
+    {
+      "id": 4,
+      "property_id": 3,
+      "owner_id": 3,
+      "status": "Approved",
+      "post_date": "2026-08-11"
+    },
+    {
+      "id": 5,
+      "property_id": 4,
+      "owner_id": 3,
+      "status": "Approved",
+      "post_date": "2026-08-11"
+    },
+    {
+      "id": 6,
+      "property_id": 5,
+      "owner_id": 3,
+      "status": "Approved",
+      "post_date": "2026-08-11"
+    },
+    {
+      "id": 7,
+      "property_id": 7,
+      "owner_id": 3,
+      "status": "Approved",
+      "post_date": "2026-08-11"
+    }
+  ],
+  "transactions": [],
+  "messages": []
+}

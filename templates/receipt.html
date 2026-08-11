@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Receipt — Plot & Key{% endblock %}
+{% block content %}
+
+<div class="receipt">
+  <h2>{{ kind }} Receipt</h2>
+  <div class="row"><span>Transaction ID</span><span>#{{ receipt.id }}</span></div>
+  <div class="row"><span>Date</span><span>{{ receipt.date }}</span></div>
+  <div class="row"><span>Property</span><span>{{ property.location }}</span></div>
+  {% if kind == "Purchase" %}
+    <div class="row total"><span>Amount paid</span><span>${{ "{:,.2f}".format(receipt.amount) }}</span></div>
+  {% else %}
+    <div class="row"><span>Monthly rent</span><span>${{ "{:,.2f}".format(receipt.monthly_rent) }}</span></div>
+    <div class="row"><span>Term</span><span>{{ receipt.months }} months</span></div>
+    <div class="row total"><span>Total paid</span><span>${{ "{:,.2f}".format(receipt.total) }}</span></div>
+  {% endif %}
+  <div class="stamp">✓ Confirmed</div>
+</div>
+<div style="text-align:center;"><a class="btn secondary" href="{{ url_for('home') }}">Back to listings</a></div>
+
+{% endblock %}

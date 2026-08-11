@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Plot & Key — Listings{% endblock %}
+{% block content %}
+
+<div class="hero">
+  <h1>Find the next place on the plan.</h1>
+  <p>Browse approved listings for sale and for rent. Filter by location, price, and bedrooms — every match is shown, not just the first one.</p>
+
+  <form class="search-bar" method="get" action="{{ url_for('home') }}">
+    <input type="text" name="location" placeholder="Location" value="{{ filters.location }}">
+    <input type="number" name="max_price" placeholder="Max price" value="{{ filters.max_price }}">
+    <input type="number" name="bedrooms" placeholder="Bedrooms" value="{{ filters.bedrooms }}">
+    <select name="type">
+      <option value="">Any type</option>
+      <option value="sale" {% if filters.type == "sale" %}selected{% endif %}>For sale</option>
+      <option value="rent" {% if filters.type == "rent" %}selected{% endif %}>For rent</option>
+    </select>
+    <button class="btn" type="submit">Search</button>
+  </form>
+</div>
+
+{% if listings %}
+<div class="grid">
+  {% for item in listings %}
+  <div class="card">
+    <span class="card-type">{{ item.property.type }}</span>
+    <div class="card-location">{{ item.property.location }}</div>
+    <div class="specs">{{ item.property.bedrooms }} bed &middot; listed by {{ item.owner.name if item.owner else "Unknown" }}</div>
+    <div class="price">${{ "{:,.0f}".format(item.property.price) }}{% if item.property.type == "rent" %} / mo{% endif %}</div>
+    <div class="card-actions">
+      <a class="btn secondary" href="{{ url_for('listing_detail', listing_id=item.listing.id) }}">View details</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">No approved listings match that search yet.</div>
+{% endif %}
+
+{% endblock %}
